@@ -7,16 +7,23 @@ import GalleryService from "../services/GalleryService";
 
 export const store = new Vuex.Store({
   state: {
-    galleries: []
+    galleries: [],
+    isAuthenticated: false
   },
   getters: {
     getGalleries(state) {
       return state.galleries;
+    },
+    getIsAuthenticated(state) {
+      return state.isAuthenticated
     }
   },
   mutations: {
     setGalleries(state, galleries) {
       state.galleries = galleries;
+    },
+    setIsAuthenticated(state, auth) {
+      state.isAuthenticated = auth
     }
   },
   actions: {

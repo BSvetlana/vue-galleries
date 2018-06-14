@@ -31,6 +31,7 @@
 
 <script>
 import { authService } from '../services/auth.js'
+import { mapMutations } from 'vuex'
 export default {
     data(){
         return {
@@ -40,10 +41,14 @@ export default {
         }
     },
      methods: {
+         ...mapMutations([
+             'setIsAuthenticated'
+             ]),
         login(){
             authService.login(this.email,this.password)
-            .then((response) => {
+            .then(() => {
                 this.$router.push({name: 'all-galleries'})
+                this.setIsAuthenticated(true)
             }).catch((error) => {
                 this.error = error.response.data.error
             })
