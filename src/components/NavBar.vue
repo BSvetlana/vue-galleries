@@ -21,8 +21,13 @@
         <b-navbar-nav class="ml-auto">
 
           <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+              
+          <b-input
+          class="mb-2 mr-sm-2 mb-sm-0"
+          placeholder="Search Galleries"
+          v-model="searchTerm"
+          @input="setSearchTerm"
+          />
           </b-nav-form>
         </b-navbar-nav>
       </b-collapse>
@@ -31,36 +36,46 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapMutations, mapGetters, mapActions } from "vuex";
 import { authService } from "../services/auth.js";
+
 export default {
-  name: 'NavBar',
+  name: "NavBar",
+
+  data() {
+    return {
+      searchTerm: ""
+    };
+  },
+
   computed: {
     ...mapGetters({
-      authent: 'getIsAuthenticated'
+      authent: "getIsAuthenticated"
     }),
     isAuth() {
       return this.authent;
     }
   },
   methods: {
-    ...mapMutations([
-      'setIsAuthenticated'
-    ]),
+    ...mapMutations(["setIsAuthenticated", "setSearchTerm"]),
+    ...mapActions(["searchGalleries"]),
+
     logout() {
-      authService.logout()
+      authService.logout();
       this.setIsAuthenticated(false);
-      
+    }
+  },
+  watch: {
+    searchTerm: function(value) {
+      this.searchGalleries(value);
     }
   }
-
-}
+};
 </script>
 
 <style scoped>
 .navbar {
-background-image:
-  url('https://st3.depositphotos.com/12674628/15278/i/450/depositphotos_152785580-stock-photo-black-slate-background.jpg');
+  background-image: url("https://st3.depositphotos.com/12674628/15278/i/450/depositphotos_152785580-stock-photo-black-slate-background.jpg");
 }
 .navbar-brand {
   color: rgb(233, 99, 22) !important;

@@ -12,10 +12,7 @@ export default {
     store: function (newGalleries) {
         return axios.post(ENDPOINTS.GALLERIES, newGalleries)
     },
-    index(page = 1) {
-        const url = ENDPOINTS.GALLERIES + '/' + page;
-        return axios.get(url)
-
-
+    search(page = 1, searchTerm) {
+        return axios.get(ENDPOINTS.GALLERIES + `/${page}/${searchTerm}`)
     }
 }
