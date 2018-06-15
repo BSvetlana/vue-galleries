@@ -1,9 +1,15 @@
 <template>
     <div>
         <ul class="list-group" v-for="(gallery,key) in galleries" :key="key">
-            <li   class="list-group-item">{{ gallery.name }}</li>
-            <li   class="list-group-item">{{ gallery.owner.first_name}}</li>
-            <img v-if="gallery.cover_image" :src="gallery.cover_image.url" class="img-fluid" alt="Responsive image">                
+            <router-link :to="{name: 'single-gallery', params: {id: gallery.id}}">
+            <li   class="list-group-item">Name Gallery: {{ gallery.name }}</li>
+            </router-link>
+            <img v-if="gallery.cover_image" :src="gallery.cover_image.url" class="img-fluid" alt="Responsive image">
+            <li   class="list-group-item">Owner: {{ gallery.owner.first_name}} {{ gallery.owner.last_name}}</li>
+            <li   class="list-group-item">Created: {{ gallery.updated_at}}</li>
+            <li   class="list-group-item">Created: {{ gallery.id}}</li>
+
+                            
         </ul>
         <galleries-pagination v-if="!count" class=" mt-4"/>
         <button @click="topFunction()" id="myBtn" title="Go to top">Back To Top</button>

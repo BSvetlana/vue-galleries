@@ -10,7 +10,7 @@ export const store = new Vuex.Store({
     galleries: [],
     isAuthenticated: false,
     searchTerm: "",
-    page: 1,
+    page: 1
   },
   getters: {
     getGalleries(state) {
@@ -60,6 +60,5 @@ export const store = new Vuex.Store({
 
       });
     }
-
   }
 });

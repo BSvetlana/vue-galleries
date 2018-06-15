@@ -7,6 +7,7 @@ Vue.use(VueRouter);
 import AllGalleries from "../pages/AllGalleries.vue";
 import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
+import SingleGalleryPage from "../pages/SingleGalleryPage.vue"
 
 const routes = [
   {
@@ -36,6 +37,14 @@ const routes = [
     name: "register-gallery",
     meta: {
       guestOnly: true
+    }
+  },
+  {
+    path: "/galleries/:id",
+    component: SingleGalleryPage,
+    name: 'single-gallery',
+    meta: {
+      requiresAuth: true
     }
   }
 ];
