@@ -8,6 +8,7 @@ import AllGalleries from "../pages/AllGalleries.vue";
 import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
 import SingleGalleryPage from "../pages/SingleGalleryPage.vue"
+import AuthorGalleryPage from "../pages/AuthorGalleryPage.vue"
 
 const routes = [
   {
@@ -46,6 +47,14 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: "/authors/:id",
+    component: AuthorGalleryPage,
+    name: 'author-galleries',
+      meta: {
+        requiresAuth: true
+      }
   }
 ];
 

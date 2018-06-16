@@ -5,9 +5,9 @@
             <li   class="list-group-item">Name Gallery: {{ gallery.name }}</li>
             </router-link>
             <img v-if="gallery.cover_image" :src="gallery.cover_image.url" class="img-fluid" alt="Responsive image">
-            <router-link :to="{name: 'author-galleries', params: {id: gallery.owner.id}}">
+            
             <li   class="list-group-item">Owner: {{ gallery.owner.first_name}} {{ gallery.owner.last_name}}</li>
-            </router-link>
+           
             <li   class="list-group-item">Created: {{ gallery.updated_at}}</li>
                             
         </ul>
@@ -21,9 +21,13 @@ import { mapGetters, mapMutations, mapActions } from "vuex";
 import GalleriesPagination from "../components/GalleriesPagination";
 
 export default {
-  name: "AllGalleries",
   components: {
     GalleriesPagination
+  },
+  data: function() {
+    return {
+      authId: null
+    };
   },
   computed: {
     ...mapGetters({
@@ -36,33 +40,20 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setPage", "setCount"]),
-    ...mapActions(["searchGalleries", "nextPage"]),
+    ...mapMutations(["setPage", "setCount", "setAuthId"]),
+    ...mapActions(["fetchAuthGalleries", "nextPage"]),
     topFunction() {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
     }
   },
-  mounted() {
-    this.searchGalleries();
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      let authId = to.params.id;
+      vm.setAuthId(authId);
+      vm.fetchAuthGalleries();
+    });
   }
 };
 </script>
-
-<style>
-#myBtn {
-  bottom: 20px;
-  right: 30px;
-  width: 100%;
-  float: right;
-  font-size: 18px;
-  border: none;
-  outline: none;
-  background-color: rgb(233, 119, 42);
-  color: white;
-  cursor: pointer;
-  padding: 15px;
-  border-radius: 4px;
-}
-</style>
-
+ 

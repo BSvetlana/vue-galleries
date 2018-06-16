@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setIsAuthenticated", "setSearchTerm"]),
-    ...mapActions(["searchGalleries"]),
+    ...mapActions(["searchGalleries","fetchAuthGalleries"]),
 
     logout() {
       authService.logout();
@@ -68,6 +68,7 @@ export default {
   watch: {
     searchTerm: function(value) {
       this.searchGalleries(value);
+      this.fetchAuthGalleries(value)
     }
   }
 };

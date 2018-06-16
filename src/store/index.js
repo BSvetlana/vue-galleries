@@ -10,7 +10,8 @@ export const store = new Vuex.Store({
     galleries: [],
     isAuthenticated: false,
     searchTerm: "",
-    page: 1
+    page: 1,
+    authId: null
   },
   getters: {
     getGalleries(state) {
@@ -24,6 +25,9 @@ export const store = new Vuex.Store({
     },
     getPage(state) {
       return state.page;
+    },
+    getAuthId(state) {
+      return state.authId
     }
   },
   mutations: {
@@ -35,12 +39,16 @@ export const store = new Vuex.Store({
     },
     setSearchTerm(state, searchTerm) {
       state.searchTerm = searchTerm;
+
     },
     setPage(state, page) {
       state.page = page;
     },
     concatGalleries(state, galleries) {
       state.galleries = state.galleries.concat(galleries);
+    },
+    setAuthId(state, authId) {
+      state.authId = authId
     }
   },
   actions: {
@@ -54,10 +62,15 @@ export const store = new Vuex.Store({
     },
     nextPage(store) {
       store.commit("setPage", store.state.page + 1);
-
       GalleryService.search(store.state.page, store.state.searchTerm).then(response => {
         store.commit("concatGalleries", response.data.galleries);
 
+      });
+    },
+    fetchAuthGalleries() {
+      store.commit("setPage", 1);
+        GalleryService.authorsGalleries(store.state.authId, store.state.page, store.state.searchTerm).then(response => {
+        store.commit('setGalleries', response.data.galleries)
       });
     }
   }

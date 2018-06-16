@@ -17,5 +17,8 @@ export default {
     },
     getId(id) {
         return axios.get(`galleries/${id}`)
+    },
+    authorsGalleries(id, page = 1, searchTerm) {
+        return axios.get(`authors-galleries/${id}/${page}/${searchTerm}`)
     }
 }
