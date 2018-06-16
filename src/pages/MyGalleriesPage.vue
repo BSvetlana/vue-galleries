@@ -1,85 +1,71 @@
 <template>
     <div>
-
-      <b-container>
+      <b-container class="mt-4">
         <b-row>
           <b-col>
-            <b-card-group deck  class="col-md-4 col-md-offset-2 d-inline-block ml-2 mb-2"
+            <b-card-group deck  class="col-md-4 col-md-offset-2 d-inline-block mt-3 ml-2"
                                 v-for="gallery in galleries"
                                 :key="gallery.id">
                       
               <b-card :img-src="gallery.cover_image.url"
                       img-alt="Card image"
                       img-top
-                      v-if="gallery.cover_image"
                       style="max-width: 20rem; height: 400px"
                       id="card">
               <router-link :to="{name: 'single-gallery', params: {id: gallery.id}}">
-                <h4 class="card-subtitle mb-2 text-muted">{{ gallery.name }}</h4>
+                <h4 class="card-title">{{ gallery.name }}</h4>
               </router-link>
               <router-link :to="{name: 'author-galleries', params: {id: gallery.owner.id}}">
                 <p class="card-text">{{ gallery.owner.first_name}} {{ gallery.owner.last_name}}</p>
               </router-link>
-                <i style="float:right; margine-bottom: 20px"> {{ gallery.updated_at}} </i>
+                <i style="float:right"> {{ gallery.updated_at}} </i>
               </b-card>
 
             </b-card-group>
-              <galleries-pagination v-if="!(count)"  class=" mt-3"/>
-              <button @click="topFunction()" id="myBtn"><span class="glyphicon glyphicon-chevron-up"></span>Go to Top</button>
-              
+              <galleries-pagination v-if="!galleryCount" class=" mt-3"/>
+              <button @click="topFunction()" id="myBtn" title="Go to top">Back To Top</button>
           </b-col>
 
         </b-row>
       </b-container>
-      
     </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
 import GalleriesPagination from "../components/GalleriesPagination";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
-  name: "AllGalleries",
   components: {
     GalleriesPagination
   },
   computed: {
     ...mapGetters({
+      user: "getUser",
       galleries: "getGalleries",
       currentTerm: "getSearchTerm",
       page: "getPage"
     }),
-    count() {
-      return  this.galleries.length / 10  < this.page;
+    galleryCount() {
+      return this.page > this.galleries.length / 10;
     }
   },
-  methods: {
-    ...mapMutations(["setPage", "setCount"]),
-    ...mapActions(["searchGalleries", "nextPage"]),
+    methods: {
+    ...mapMutations(["setPage", "setCount", "setUser"]),
+    ...mapActions(["fetchUserGalleries", "nextPage"]),
     topFunction() {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
     }
   },
-  mounted() {
-    this.searchGalleries();
+    beforeRouteEnter(to, from, next) {
+    next(vm => {
+       let user = to.params.id;
+      vm.setUser(user);
+      vm.fetchUserGalleries();
+      
+    });
   }
 };
 </script>
-
-<style>
-#myBtn { 
-  width: 100%;  
-  font-size: 18px;
-  border: none;
-  outline: none;
-  background-color: rgb(233, 118, 42);
-  color: rgb(73, 72, 72);
-  cursor: pointer;
-  padding: 0.5em;
-  border-radius: 4px;
-}
-
-</style>
 

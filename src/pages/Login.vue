@@ -64,7 +64,7 @@ export default {
     margin-top: 30px;
 }
 .container {
-    background-color: beige
+    background-color: rgb(247, 247, 233)
 }
 
 </style>

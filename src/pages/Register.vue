@@ -80,7 +80,7 @@ export default {
         register(){
             register.addUser(this.userRegister)
             .then((response) => {
-                this.$router.push({name: 'login'})
+                this.$router.push({name: 'login-gallery'})
             }).catch((error) => {
                 if(error.response.status == 422) {
                     this.errors = error.response.data.errors;

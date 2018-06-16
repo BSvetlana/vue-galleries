@@ -9,6 +9,7 @@ import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
 import SingleGalleryPage from "../pages/SingleGalleryPage.vue"
 import AuthorGalleryPage from "../pages/AuthorGalleryPage.vue"
+import MyGalleriesPage from "../pages/MyGalleriesPage.vue"
 
 const routes = [
   {
@@ -55,6 +56,22 @@ const routes = [
       meta: {
         requiresAuth: true
       }
+  },
+  {
+    path: "/my-galleries",
+    component: MyGalleriesPage,
+    name: "my-galleries",
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/galleries/:id/:comments",
+    component: SingleGalleryPage,
+    name: 'single-gallery-comment',
+    meta: {
+      requiresAuth: true
+    }
   }
 ];
 

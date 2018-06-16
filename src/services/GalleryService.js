@@ -20,5 +20,8 @@ export default {
     },
     authorsGalleries(id, page = 1, searchTerm) {
         return axios.get(`authors-galleries/${id}/${page}/${searchTerm}`)
+    },
+    myGalleries(page = 1, searchTerm) {
+        return axios.get(`my-galleries/${page}/${searchTerm}`)
     }
 }
