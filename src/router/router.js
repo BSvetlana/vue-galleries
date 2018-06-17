@@ -77,7 +77,7 @@ const routes = [{
     }
   },
   {
-    path: "/edit",
+    path: "/edit/:id",
     component: CreateNewGallery,
     name: 'edit',
     meta: {

@@ -16,23 +16,31 @@
                     <div class="form-group">
                         <label for="description">Description of Gallery</label>
                         <input v-model="newGalleries.description" type="text" class="form-control" id="description" placeholder="Enter Gallery Description">
-                     <span v-if="errors.description"  class="error">
-                        <div v-for="error in errors.description" :key="error"  class="alert alert-danger mt-2" role="alert">
-                            {{ error }}
-                        </div>
-                    </span>
+                        <span v-if="errors.description"  class="error">
+                            <div v-for="error in errors.description" :key="error"  class="alert alert-danger mt-2" role="alert">
+                                {{ error }}
+                            </div>
+                        </span>
                     </div>
-                    <div class="form-group">
-                        <label for="cover_image">Add Images</label>
-                        <input v-model="newGalleries.cover_image" type="text" class="form-control" id="cover_image" placeholder="Enter Gallery Description">
-                     <span v-if="errors.cover_image"  class="error">
-                        <div v-for="error in errors.cover_image" :key="error"  class="alert alert-danger mt-2" role="alert">
-                            {{ error }}
-                        </div>
-                    </span>
+                        <label for="url">Add Images</label>
+                    <div class="form-group" v-for="(image,key) in newGalleries.images" :key="key">
+                        <div class="input-group mb-1">
+                            
+                            <div class="input-group-append">
+                                <span style="background-color: grey; color: black;" @click="removeImage(key)" class="input-group-text" id="inputGroup-sizing-default">X</span>
+                            </div>
+                            <input v-model="image.url" id="url" placeholder="URL" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                            </div>              
+                            <span v-if="errors['images.' + key + '.url']" class="error">
+                                <div v-for="error in errors['images.' + key + '.url']" :key="error"  class="alert alert-danger mt-2" role="alert">
+                                    {{ error }}
+                                </div>
+                            </span>
                     </div>
-                    <button @click="cancel" type="submit" class="btn btn-warning btn-lg">Cancel</button>
-                    <button type="submit" class="btn btn-secondary btn-lg">Submit</button>
+                    <button style="width: 100%" class="btn btn-secondary btn-sm " @click="addImage">Add image</button>
+                    
+                    <button style="width: 50%" type="submit" class="btn btn-secondary btn-lg">Submit</button>
+                    <button style="width: 50%" @click="cancel" type="submit" class="btn btn-warning btn-lg">Cancel</button>
                 </form>
             </div>
         </div>
@@ -47,7 +55,12 @@ export default {
       newGalleries: {
         name: "",
         description: "",
-        cover_image: ""
+        images: [
+          {
+            url: "",
+            order: 1
+          }
+        ]
       },
       errors: []
     };
@@ -81,7 +94,7 @@ export default {
     },
     editGallery() {
       GalleryService.editGallery(this.$route.params.id, this.newGalleries)
-        .then(response => {
+        .then(() => {
           this.$router.push({ name: "view-gallery" });
         })
         .catch(error => {
@@ -92,6 +105,15 @@ export default {
     },
     cancel() {
       this.$router.push({ name: "my-galleries" });
+    },
+    addImage() {
+      this.newGalleries.images.push({
+        url: "",
+        order: this.newGalleries.images.length + 1
+      });
+    },
+    removeImage(index) {
+      this.newGalleries.images.splice(index, 1);
     }
   }
 };

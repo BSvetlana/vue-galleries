@@ -76,7 +76,7 @@ import { mapGetters, mapMutations } from "vuex";
 import { authService } from "../services/auth.js";
 
 export default {
-  name: "SingleGalleryPage",
+  name: "ViewGalleryPage",
   data() {
     return {
       gallery: {},
