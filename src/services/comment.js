@@ -12,6 +12,10 @@ export default class Comment {
     addComment(id, newComment) {
         return axios.post(`galleries/${id}/comments`, newComment)
     }
+
+    delete(id) {
+        return axios.delete(`comments/${id}`)
+    }
 }
 
 export const comment = new Comment();

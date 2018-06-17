@@ -1,18 +1,21 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import { requiresAuth, guestOnly } from "./guards";
+import {
+  requiresAuth,
+  guestOnly
+} from "./guards";
 
 Vue.use(VueRouter);
 
 import AllGalleries from "../pages/AllGalleries.vue";
 import Login from "../pages/Login.vue";
 import Register from "../pages/Register.vue";
-import SingleGalleryPage from "../pages/SingleGalleryPage.vue"
+import ViewGalleryPage from "../pages/ViewGalleryPage.vue"
 import AuthorGalleryPage from "../pages/AuthorGalleryPage.vue"
 import MyGalleriesPage from "../pages/MyGalleriesPage.vue"
+import CreateNewGallery from "../pages/CreateNewGallery.vue"
 
-const routes = [
-  {
+const routes = [{
     path: "/",
     redirect: "/galleries",
     name: "home"
@@ -43,8 +46,8 @@ const routes = [
   },
   {
     path: "/galleries/:id",
-    component: SingleGalleryPage,
-    name: 'single-gallery',
+    component: ViewGalleryPage,
+    name: 'view-gallery',
     meta: {
       requiresAuth: true
     }
@@ -53,9 +56,9 @@ const routes = [
     path: "/authors/:id",
     component: AuthorGalleryPage,
     name: 'author-galleries',
-      meta: {
-        requiresAuth: true
-      }
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "/my-galleries",
@@ -66,9 +69,17 @@ const routes = [
     }
   },
   {
-    path: "/galleries/:id/:comments",
-    component: SingleGalleryPage,
-    name: 'single-gallery-comment',
+    path: "/create",
+    component: CreateNewGallery,
+    name: "create-gallery",
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/edit",
+    component: CreateNewGallery,
+    name: 'edit',
     meta: {
       requiresAuth: true
     }
@@ -82,8 +93,8 @@ export const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   Promise.resolve(to)
-      .then(requiresAuth)
-      .then(guestOnly)
+    .then(requiresAuth)
+    .then(guestOnly)
     .then(() => {
       next();
     })

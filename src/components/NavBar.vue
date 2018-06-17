@@ -13,7 +13,7 @@
           <b-nav-item :to="{name: 'login-gallery'}" v-if="!isAuth">Login</b-nav-item>
           <b-nav-item :to="{name: 'register-gallery'}" v-if="!isAuth">Register</b-nav-item>
           <b-nav-item :to="{name: 'my-galleries'}" v-if="isAuth">My Galleries</b-nav-item>
-          <b-nav-item v-if="isAuth">Create New Gallery</b-nav-item>
+          <b-nav-item :to="{name: 'create-gallery'}" v-if="isAuth">Create New Gallery</b-nav-item>
           <a href="" class="nav-item nav-link" @click="logout" v-if="isAuth">Logout</a>
         </b-navbar-nav>
 
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setIsAuthenticated", "setSearchTerm"]),
-    ...mapActions(["searchGalleries","fetchAuthGalleries","fetchUserGalleries"]),
+    ...mapActions(["searchGalleries"]),
 
     logout() {
       authService.logout();
@@ -68,8 +68,6 @@ export default {
   watch: {
     searchTerm: function(value) {
       this.searchGalleries(value);
-      this.fetchAuthGalleries(value)
-      this.fetchUserGalleries(value)
     }
   }
 };
@@ -89,5 +87,4 @@ export default {
   color: whitesmoke !important;
   background: rgb(233, 99, 22);
 }
-
 </style>

@@ -1,9 +1,10 @@
 <template>
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-8 offset-md-2 mt-3 mb-3">
-                <form @submit.prevent="register">
-                    <div class="form-group">
+            <div class="col-md-8 offset-md-2 mb-3 mt-4">
+                <form @submit.prevent="register" class="form-horizontal">
+                    <h3  class="card-text text-muted mt-4">Register</h3>
+                    <div class="form-group mt-4">
                         <label for="first_name">First Name</label>
                         <input v-model="userRegister.first_name" type="text" class="form-control" id="first_name" placeholder="First Name">
                         <span v-if="errors.first_name" class="error">
@@ -61,47 +62,46 @@
 </template>
 
 <script>
-import { register } from '../services/register.js'
+import { register } from "../services/register.js";
 export default {
-    data() {
-        return {
-            userRegister: {
-                first_name: '',
-                last_name: '',
-                email: '',
-                password: '',
-                password_confirmation: '',
-                terms_and_conditions: ''
-            },
-            errors: []
-        }
-    },
-    methods: {
-        register(){
-            register.addUser(this.userRegister)
-            .then((response) => {
-                this.$router.push({name: 'login-gallery'})
-            }).catch((error) => {
-                if(error.response.status == 422) {
-                    this.errors = error.response.data.errors;
-
-                }
-            })
-        }
+  data() {
+    return {
+      userRegister: {
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+        terms_and_conditions: ""
+      },
+      errors: []
+    };
+  },
+  methods: {
+    register() {
+      register
+        .addUser(this.userRegister)
+        .then(() => {
+          this.$router.push({ name: "login-gallery" });
+        })
+        .catch(error => {
+          if (error.response.status == 422) {
+            this.errors = error.response.data.errors;
+          }
+        });
     }
-    
-}
+  }
+};
 </script>
 
 <style>
 .btn {
-    float: right;
-    margin-top: 30px;
+  float: right;
+  margin-top: 30px;
 }
 .container {
-    background-color: beige
+  background-color: beige;
 }
-
 </style>
 
 

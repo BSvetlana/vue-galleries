@@ -1,8 +1,13 @@
 <template>
-  <div class="container">
+  <div class="container" id="single">
     <div class="row">
       <div class="col-md-10 offset-md-1 mb-4">
+        <router-link v-if="userId === gallery.owner_id" style="color: black; text-decoration:none  " :to="{name: 'edit', params: { id: gallery.id }}">
+        <button style="width: 100%" class="btn btn-outline-info btn-sm mb-1 mt-2">Edit Gallery</button> 
+        </router-link>
+        <button v-if="userId === gallery.owner_id" style="width: 100%" class="btn btn-outline-secondary btn-sm mb-4 mt-1" @click="deleteGalleries()">Delete Gallery</button> 
         <h4 class="card-title">{{ gallery.name}}</h4>
+         
         <router-link :to="{name: 'author-galleries', params: {id: gallery.owner.id}}">
           <h4 class="card-subtitle mb-2 text-muted">
                 {{ gallery.owner.first_name }}
@@ -11,8 +16,10 @@
         </router-link>
         <p class="card-subtitle mb-2 text-muted">
         <i>{{ gallery.created_at}}</i>
-        </p>   
+        </p> 
+        
         <p class="card-text">{{ gallery.description}}</p>
+        
         <hr class="lines">
         <b-carousel id="carousel1"
                     style="text-shadow: 1px 1px 2px #333;"
@@ -28,6 +35,7 @@
             </a>
           </div>
         </b-carousel>
+        
       <hr class="lines">
       <h4 class="mt-4" style="">Comments</h4>
         <b-list-group class="mt-4" v-for="(comment, key) in gallery.comments" :key="key">          
@@ -35,7 +43,10 @@
             <p>{{ comment.body}}</p>
               <i style="float:right">{{ comment.created_at }}</i>
               <i style="float:left">{{ comment.owner.first_name }} {{ comment.owner.last_name }}</i>
+              <button v-if="userId === comment.owner_id" style="width: 100%" class="btn btn-outline-danger btn-sm" @click="deleteComment(comment.id,key)">Delete</button>
           </b-list-group-item>
+          
+          
         </b-list-group>
       <hr class="lines">
       <form @submit.prevent="onComment">   
@@ -62,6 +73,7 @@
 import GalleryService from "../services/GalleryService";
 import { comment } from "../services/comment.js";
 import { mapGetters, mapMutations } from "vuex";
+import { authService } from "../services/auth.js";
 
 export default {
   name: "SingleGalleryPage",
@@ -74,7 +86,18 @@ export default {
       errors: []
     };
   },
+  computed: {
+    ...mapGetters({
+      authent: "getIsAuthenticated",
+      user: "getUser"
+    }),
+    userId() {
+      return authService.getUserId();
+    }
+  },
+
   methods: {
+    ...mapMutations(["setIsAuthenticated"]),
     onComment() {
       comment
         .addComment(this.gallery.id, this.newComment)
@@ -91,6 +114,20 @@ export default {
     topFunction() {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
+    },
+    deleteComment(id, key) {
+      alert(`Delete comment ${this.gallery.owner.first_name}`);
+      comment.delete(id).then(() => {
+        this.gallery.comments.splice(key, 1);
+      });
+    },
+    deleteGalleries() {
+      GalleryService.deleteGallery(this.gallery.id).then(() => {
+        alert(`Delete gallery ${this.gallery.owner.first_name}`);
+        let index = this.gallery.id;
+        this.gallery.splice(index, 1);
+      });
+      this.$router.push({ name: "my-galleries" });
     }
   },
 
@@ -119,9 +156,10 @@ h4 {
 .btn {
   float: right;
   margin-top: 30px;
+  width: 10em;
 }
-.container {
-  margin-top: 4em;
+#single {
+  margin-top: 5em;
 }
 </style>
 

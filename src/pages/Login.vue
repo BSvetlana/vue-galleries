@@ -1,9 +1,10 @@
 <template>
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-6 offset-md-3 mt-3 mb-3">
+            <div class="col-md-6 offset-md-3 mb-3 mt-4">
                 <form @submit.prevent="login">
-                <div class="form-group">
+                    <h3  class="card-text text-muted mt-4">Login</h3>
+                <div class="form-group mt-4">
                     <label for="email">Email address</label>
                     <input v-model="email" type="email" class="form-control" id="email" placeholder="Enter email">
                     <span v-if="error.length" class="error">
@@ -30,43 +31,41 @@
 </template>
 
 <script>
-import { authService } from '../services/auth.js'
-import { mapMutations } from 'vuex'
+import { authService } from "../services/auth.js";
+import { mapMutations } from "vuex";
 export default {
-    data(){
-        return {
-            email: '',
-            password: '',
-            error: ''
-        }
-    },
-     methods: {
-         ...mapMutations([
-             'setIsAuthenticated'
-             ]),
-        login(){
-            authService.login(this.email,this.password)
-            .then(() => {
-                this.$router.push({name: 'all-galleries'})
-                this.setIsAuthenticated(true)
-            }).catch((error) => {
-                this.error = error.response.data.error
-            })
-        }
+  data() {
+    return {
+      email: "",
+      password: "",
+      error: ""
+    };
+  },
+  methods: {
+    ...mapMutations(["setIsAuthenticated"]),
+    login() {
+      authService
+        .login(this.email, this.password)
+        .then(() => {
+          this.$router.push({ name: "all-galleries" });
+          this.setIsAuthenticated(true);
+        })
+        .catch(error => {
+          this.error = error.response.data.error;
+        });
     }
-    
-}
+  }
+};
 </script>
 
 <style>
 .btn {
-    float: right;
-    margin-top: 30px;
+  float: right;
+  margin-top: 30px;
 }
 .container {
-    background-color: rgb(247, 247, 233)
+  background-color: rgb(236, 236, 230);
 }
-
 </style>
 
 
